@@ -20,7 +20,27 @@
 	--myriad-pro-font-family: 'MyriadPro';
 }
 
+body.elementor-page {
+	--e-global-typography-primary-font-family: var(--myriad-pro-font-family);
+	--e-global-typography-secondary-font-family: var(--myriad-pro-font-family);
+	--e-global-typography-text-font-family: var(--myriad-pro-font-family);
+	--e-global-typography-accent-font-family: var(--myriad-pro-font-family);
+}
+
 .myriad-pro-font-family,
-h1, h2, h3, h4, h5, h6 {
-	font-family: var(--myriad-pro-font-family);
+body,
+h1, h2, h3, h4, h5, h6,
+.rs-heading .title-inner .title,
+.rs-heading .title-inner .title span.watermar,
+.rs-heading .title-inner .title span.watermark-animate,
+.rs-heading.style11 .sub-text,
+.menu-area .navbar ul li a,
+.rs-services1 .services-title,
+.readon,
+.rs-team-grid.team-style5 .team-item .team-title {
+	font-family: var(--myriad-pro-font-family), sans-serif;
+}
+
+.counter-top-area .rs-counter-list .count-text .rs-counter {
+	font-family: var(--myriad-pro-font-family), sans-serif !important;
 }
