@@ -1,0 +1,155 @@
+.elementor-widget-entrey-tabs {
+    &.layout {
+        &-horizontal {
+            .tabs__headings-container {
+                margin-bottom: 20px;
+            }
+            .tab__heading {
+                margin-right: 7px;
+                &:first-child {
+                    margin-left: 0 !important;
+                }
+                &:last-child {
+                    margin-right: 0 !important;
+                }
+            }
+            .tab__content {
+                margin: 10px 0 5px;
+            }
+        }
+        &-vertical {
+            .entrey-tabs {
+                display: flex;
+                flex-direction: row;
+                @media (max-width: 767px) {
+                    flex-direction: column;
+                }
+            }
+            .tabs__headings-container {
+                flex-direction: column;
+                align-self: flex-start;
+                .tab__heading {
+                    margin-bottom: 3px;
+                    &:first-child {
+                        margin-top: 0 !important;
+                    }
+                    &:last-child {
+                        margin-bottom: 0 !important;
+                    }
+                }
+            }
+            .tabs__contents-container {
+                flex-grow: 1;
+                .tab__content {
+                    margin: 0 0 5px 50px;
+                    @media (max-width: 767px) {
+                        margin-left: 0;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.entrey-tabs {
+    .tabs__headings-container {
+        display: inline-flex;
+        position: relative;
+    }
+    .tab__heading {
+        display: inline-flex;
+        align-items: center;
+        flex-direction: column;
+        justify-content: center;
+        position: relative;
+        font-weight: 700;
+        line-height: 1.3;
+        cursor: pointer;
+        transition: 0.4s;
+    }
+    .tab__content {
+        display: block;
+    }
+    .heading__title {
+        display: flex;
+        align-items: center;
+        position: relative;
+        margin: 0;
+        font-size: 14px;
+        font-weight: 700;
+        line-height: inherit;
+        color: inherit;
+        .title__text {
+            font: inherit;
+            color: inherit;
+            transition: 0.3s;
+        }
+    }
+}
+
+// ↓ Alignment
+@mixin tabs-headings-alignment {
+    &-left {
+        text-align: left;
+    }
+    &-center {
+        text-align: center;
+    }
+    &-right {
+        text-align: right;
+    }
+    &-justify .tabs__headings-container {
+        display: flex;
+        .tab__heading {
+            flex-grow: 1;
+        }
+    }
+}
+@mixin tabs-contents-alignment {
+    &-left .tabs__contents-container { text-align: left; }
+    &-center .tabs__contents-container { text-align: center; }
+    &-right .tabs__contents-container { text-align: right; }
+    &-justify .tabs__contents-container { text-align: justify; }
+}
+.elementor-widget-entrey-tabs {
+    &.titles-align {
+        @include tabs-headings-alignment;
+    }
+    &.contents-align {
+        @include tabs-contents-alignment;
+    }
+}
+body[data-elementor-device-mode='tablet'] {
+    .elementor-widget-entrey-tabs {
+        &.titles-align-tablet {
+            @include tabs-headings-alignment;
+        }
+        &.contents-align-tablet {
+            @include tabs-contents-alignment;
+        }
+    }
+}
+body[data-elementor-device-mode='mobile'] {
+    .elementor-widget-entrey-tabs {
+        &.layout {
+            &-horizontal {
+                &.titles-align-mobile {
+                    @include tabs-headings-alignment;
+                    &-justify .tabs__headings-container {
+                        flex-direction: column;
+                    }
+                }
+                &.contents-align-mobile {
+                    @include tabs-contents-alignment;
+                }
+            }
+            &-vertical {
+                .tabs__headings-container {
+                    width: 100%;
+                    margin-bottom: 15px;
+                }
+            }
+        }
+    }
+}
+// ↑ alignment

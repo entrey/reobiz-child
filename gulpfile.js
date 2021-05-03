@@ -33,6 +33,8 @@ task('sass', (done) => {
   done();
 });
 
-task('watch', () => {
+task('watch', (done) => {
   watch(pathTo.elementor.scss, parallel('sass'));
+
+  done()
 });
