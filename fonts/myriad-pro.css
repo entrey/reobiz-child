@@ -1,0 +1,26 @@
+@font-face {
+	font-family: 'MyriadPro';
+	font-display: swap;
+	font-weight: 700;
+	src: url('./myriad-pro/myriadpro-bold.woff2') format('woff2'), /* Default */
+		url('./myriad-pro/myriadpro-bold.ttf') format('truetype'), /* Safari, Android, iOS */
+		url('./myriad-pro/myriadpro-bold.svg#myriadpro-bold') format('svg'); /* Chrome < 4, Legacy iOS */
+}
+
+@font-face {
+	font-family: 'MyriadPro';
+	font-display: swap;
+	font-weight: 400;
+	src: url('./myriad-pro/myriadpro-regular.woff2') format('woff2'), /* Default */
+		url('./myriad-pro/myriadpro-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+		url('./myriad-pro/myriadpro-regular.svg#myriadpro-regular') format('svg'); /* Chrome < 4, Legacy iOS */
+}
+
+:root {
+	--myriad-pro-font-family: 'MyriadPro';
+}
+
+.myriad-pro-font-family,
+h1, h2, h3, h4, h5, h6 {
+	font-family: var(--myriad-pro-font-family);
+}
