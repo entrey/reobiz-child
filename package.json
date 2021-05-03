@@ -1,0 +1,19 @@
+{
+  "name": "reobiz-child",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/entrey/reobiz-child.git"
+  },
+  "author": "Roman Peniaz",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/entrey/reobiz-child/issues"
+  },
+  "devDependencies": {
+  }
+}
