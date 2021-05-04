@@ -27,7 +27,7 @@ class Entrey_Elementor
 
     public function inject_extra_widgets()
     {
-        $widgets_folder_path = __DIR__ . '\widgets\\';
+        $widgets_folder_path = __DIR__ . '/widgets/';
 
         foreach ( glob( $widgets_folder_path . '*.php' ) as $file ) {
             require_once $file;
@@ -52,8 +52,27 @@ class Entrey_Elementor
 
     public function enqueue_widgets_dependencies()
     {
-        wp_enqueue_style( 'entrey-tabs', get_stylesheet_directory_uri() . '/elementor/css/tabs.css' );
+        $this->enqueue_dependent_stylesheets();
+
         wp_enqueue_script( 'entrey-tabs', get_stylesheet_directory_uri() . '/elementor/js/tabs.js' );
+
+        wp_enqueue_script( 'isotope', get_stylesheet_directory_uri() . '/elementor/js/isotope.pkgd.min.js', [], '3.0.6' );
+        wp_enqueue_script( 'entrey-services-sorter', get_stylesheet_directory_uri() . '/elementor/js/services_sorter.js', [ 'isotope' ] );
+    }
+
+    protected function enqueue_dependent_stylesheets()
+    {
+        $css_folder_path = __DIR__ . '/css/';
+
+        foreach ( glob( $css_folder_path . '*.css' ) as $file ) {
+            $base_name = basename( $file );
+            $widget_name = str_replace( '.css', '', $base_name );
+
+            wp_enqueue_style(
+                'entrey-' . $widget_name,
+                get_stylesheet_directory_uri() . '/elementor/css/'. $base_name
+            );
+        }
     }
 }
 

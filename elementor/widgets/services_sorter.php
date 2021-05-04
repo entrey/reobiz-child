@@ -17,16 +17,16 @@ use Elementor\{
     Group_Control_Box_Shadow
 };
 
-class Entrey_Tabs extends Widget_Base
+class Entrey_Services_Sorter extends Widget_Base
 {
     public function get_name()
     {
-        return 'entrey-tabs';
+        return 'entrey-services-sorter';
     }
 
     public function get_title()
     {
-        return esc_html__( 'Tiger Print Tabs', 'reobiz' );
+        return esc_html__( 'Tiger Print Services Sorter', 'reobiz' );
     }
 
     public function get_categories()
@@ -36,8 +36,8 @@ class Entrey_Tabs extends Widget_Base
 
     public function get_icon()
     {
-       return 'eicon-tabs';
-    }
+		return 'eicon-gallery-grid';
+	}
 
     protected function register_controls()
     {
@@ -48,47 +48,90 @@ class Entrey_Tabs extends Widget_Base
             [ 'label' => esc_html__( 'General', 'reobiz' ) ]
         );
 
-        $this->add_control(
-            'titles_layout',
+        $this->add_responsive_control(
+            'tags_alignment',
             [
-                'label' => esc_html__( 'Titles Layout', 'pawscare-core' ),
+                'label' => esc_html__( 'Tags Alignment', 'reobiz' ),
+                'type' => Controls_Manager::CHOOSE,
+                'separator' => 'after',
+                'options' => [
+                    'left' => [
+                        'title' => esc_html__( 'Left', 'reobiz' ),
+                        'icon' => 'fa fa-align-left',
+                    ],
+                    'center' => [
+                        'title' => esc_html__( 'Center', 'reobiz' ),
+                        'icon' => 'fa fa-align-center',
+                    ],
+                    'right' => [
+                        'title' => esc_html__( 'Right', 'reobiz' ),
+                        'icon' => 'fa fa-align-right',
+                    ],
+                ],
+                'selectors_dictionary' => [
+                    'left' => 'flex-start',
+                    'right' => 'flex-end',
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .sorter__tags_container' => 'justify-content: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_responsive_control(
+            'content_grid',
+            [
+                'label' => esc_html__( 'Content Grid Columns', 'reobiz' ),
                 'type' => Controls_Manager::SELECT,
                 'options' => [
-                    'horizontal' => esc_html__( 'Horizontal', 'pawscare-core' ),
-                    'vertical' => esc_html__( 'Vertical', 'pawscare-core' ),
+                    1 => esc_html__( '1 (one)', 'reobiz' ),
+                    2 => esc_html__( '2 (two)', 'reobiz' ),
+                    3 => esc_html__( '3 (three)', 'reobiz' ),
+                    4 => esc_html__( '4 (four)', 'reobiz' ),
+                    5 => esc_html__( '5 (five)', 'reobiz' ),
                 ],
-                'prefix_class' => 'layout-',
-                'default' => 'horizontal',
+                'default' => 4,
+                'tablet_default' => 2,
+                'mobile_default' => 1,
+                'selectors_dictionary' => [
+                    1 => '100%',
+                    2 => '50%',
+                    3 => '33.3333%',
+                    4 => '25%',
+                    5 => '20%',
+                ],
+                'selectors' => [
+                    '{{WRAPPER}}' => '--entrey-sorter-content-width: {{VALUE}};',
+                ],
             ]
         );
 
         $this->add_responsive_control(
             'titles_align',
             [
-                'label' => esc_html__('Titles Alignment', 'reobiz'),
+                'label' => esc_html__( 'Titles Alignment', 'reobiz' ),
                 'type' => Controls_Manager::CHOOSE,
-                'separator' => 'after',
                 'options' => [
                     'left' => [
-                        'title' => esc_html__('Left', 'reobiz'),
+                        'title' => esc_html__( 'Left', 'reobiz' ),
                         'icon' => 'fa fa-align-left',
                     ],
                     'center' => [
-                        'title' => esc_html__('Center', 'reobiz'),
+                        'title' => esc_html__( 'Center', 'reobiz' ),
                         'icon' => 'fa fa-align-center',
                     ],
                     'right' => [
-                        'title' => esc_html__('Right', 'reobiz'),
+                        'title' => esc_html__( 'Right', 'reobiz' ),
                         'icon' => 'fa fa-align-right',
                     ],
-                    'justify' => [
-                        'title' => esc_html__( 'Justify', 'reobiz' ),
-                        'icon' => 'fa fa-align-justify',
-                    ],
                 ],
-                'default' => 'left',
-                'mobile_default' => 'justify',
-                'prefix_class' => 'titles-align%s-',
+                'selectors_dictionary' => [
+                    'left' => 'flex-start',
+                    'right' => 'flex-end',
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .content__title' => 'text-align: {{VALUE}};',
+                ],
             ]
         );
 
@@ -116,9 +159,10 @@ class Entrey_Tabs extends Widget_Base
                         'icon' => 'fa fa-align-justify',
                     ],
                 ],
-                'prefix_class' => 'contents-align%s-',
-                'default' => 'left',
-                'mobile_default' => 'justify',
+                'default' => 'center',
+                'selectors' => [
+                    '{{WRAPPER}} .sorter__content' => 'text-align: {{VALUE}};',
+                ],
             ]
         );
 
@@ -134,82 +178,44 @@ class Entrey_Tabs extends Widget_Base
         $repeater = new Repeater();
 
         $repeater->add_control(
-            'tab_title',
+            'item_title',
             [
-                'label' => esc_html__( 'Tab Title', 'reobiz' ),
+                'label' => esc_html__( 'Title', 'reobiz' ),
                 'type' => Controls_Manager::TEXT,
+                'label_block' => true,
                 'dynamic' => [ 'active' => true ],
                 'default' => esc_html__( 'Tab Title', 'reobiz' ),
             ]
         );
 
         $repeater->add_control(
-            'content_type',
+            'item_media',
             [
-                'label' => esc_html__( 'Content Type', 'reobiz' ),
-                'type' => Controls_Manager::SELECT,
-                'options' => [
-                    'content' => esc_html__( 'Content', 'reobiz' ),
-                    'media' => esc_html__( 'Media', 'reobiz' ),
-                ],
-                'default' => 'content',
-            ]
-        );
-
-        $repeater->add_control(
-            'tab_content',
-            [
-                'label' => esc_html__( 'Tab Content', 'reobiz' ),
-                'type' => Controls_Manager::WYSIWYG,
-                'condition' => [ 'content_type' => 'content' ],
-                'dynamic' => [ 'active' => true ],
-                'default' => esc_html__( 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Optio, neque qui velit. Magni dolorum quidem ipsam eligendi, totam, facilis laudantium cum accusamus ullam voluptatibus commodi numquam, error, est. Ea, consequatur.', 'reobiz' ),
-            ]
-        );
-
-        $repeater->add_control(
-            'tab_media',
-            [
-                'label' => esc_html__( 'Tab Media', 'reobiz' ),
+                'label' => esc_html__( 'Media', 'reobiz' ),
                 'type' => Controls_Manager::MEDIA,
-                'condition' => [ 'content_type' => 'media' ],
-                'label_block' => true,
                 'default' => [ 'url' => Utils::get_placeholder_image_src() ],
             ]
         );
 
         $repeater->add_control(
-            'tab_customization',
+            'item_wysiwyg',
             [
-                'label' => esc_html__( 'Customize Colors', 'reobiz' ),
-                'type' => Controls_Manager::SWITCHER,
-                'separator' => 'before',
+                'label' => esc_html__( 'Content', 'reobiz' ),
+                'type' => Controls_Manager::WYSIWYG,
+                'dynamic' => [ 'active' => true ],
+                'default' => esc_html__( 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Optio, neque qui velit.', 'reobiz' ),
             ]
         );
 
         $repeater->add_control(
-            'tab_individual_heading_bg',
+            'item_tags',
             [
-                'label' => esc_html__( 'Individual Title BG Color Idle', 'reobiz' ),
-                'type' => Controls_Manager::COLOR,
-                'condition' => [ 'tab_customization' => 'yes' ],
+                'label' => esc_html__( 'Tags List', 'reobiz' ),
+                'type' => Controls_Manager::TEXT,
+                'label_block' => true,
+                'required' => true,
                 'dynamic' => [ 'active' => true ],
-                'selectors' => [
-                    '{{WRAPPER}} {{CURRENT_ITEM}}.tab__heading' => 'background-color: {{VALUE}};',
-                ],
-            ]
-        );
-
-        $repeater->add_control(
-            'tab_individual_content_bg',
-            [
-                'label' => esc_html__( 'Individual Content BG Color', 'reobiz' ),
-                'type' => Controls_Manager::COLOR,
-                'condition' => [ 'tab_customization' => 'yes' ],
-                'dynamic' => [ 'active' => true ],
-                'selectors' => [
-                    '{{WRAPPER}} {{CURRENT_ITEM}}.tab__content' => 'background-color: {{VALUE}};',
-                ],
+                'description' => esc_html__( 'Список тэгов для сортировки, перечисленных через запятую.', 'reobiz' ),
             ]
         );
 
@@ -219,62 +225,52 @@ class Entrey_Tabs extends Widget_Base
                 'type' => Controls_Manager::REPEATER,
                 'seperator' => 'before',
                 'fields' => $repeater->get_controls(),
-                'title_field' => '{{tab_title}}',
+                'title_field' => '{{item_title}}',
                 'default' => [
-                    [ 'tab_title' => esc_html__( 'Tab Title 1', 'reobiz' ) ],
-                    [ 'tab_title' => esc_html__( 'Tab Title 2', 'reobiz' ) ],
-                    [ 'tab_title' => esc_html__( 'Tab Title 3', 'reobiz' ) ],
+                    [
+                        'item_title' => esc_html__( 'Title 1', 'reobiz' ),
+                        'item_tags' => esc_html__( 'Все, Популярная продукция, Полиграфия', 'reobiz' ),
+                    ],
+                    [
+                        'item_title' => esc_html__( 'Title 2', 'reobiz' ),
+                        'item_tags' => esc_html__( 'Все, Полиграфия, Копицентр', 'reobiz' ),
+                    ],
                 ],
             ]
         );
 
         $this->end_controls_section();
 
-        /** STYLE -> HEADINGS SECTION */
+        /** STYLE -> TAGS SECTION */
 
         $this->start_controls_section(
-            'style_headings_section',
+            'style_tags_section',
             [
-                'label' => esc_html__( 'Headings Section', 'reobiz' ),
+                'label' => esc_html__( 'Tags Section', 'reobiz' ),
                 'tab' => Controls_Manager::TAB_STYLE,
             ]
         );
 
         $this->add_responsive_control(
-            'headings_max_width',
-            [
-                'label' => esc_html__( 'Max Width', 'reobiz' ),
-                'type' => Controls_Manager::SLIDER,
-                'condition' => [ 'titles_layout' => 'vertical' ],
-                'range' => [
-                    'px' => [ 'min' => 100, 'max' => 750 ],
-                ],
-                'selectors' => [
-                    '{{WRAPPER}} .tabs__headings-container' => 'max-width: {{SIZE}}{{UNIT}};',
-                ],
-            ]
-        );
-
-        $this->add_responsive_control(
-            'headings_section_margin',
+            'tags_section_margin',
             [
                 'label' => esc_html__( 'Margin', 'reobiz' ),
                 'type' => Controls_Manager::DIMENSIONS,
                 'size_units' => [ 'px', 'em', '%' ],
                 'selectors' => [
-                    '{{WRAPPER}} .tabs__headings-container' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                    '{{WRAPPER}} .sorter__tags_container' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
                 ],
             ]
         );
 
         $this->add_responsive_control(
-            'headings_section_padding',
+            'tags_section_padding',
             [
                 'label' => esc_html__( 'Padding', 'reobiz' ),
                 'type' => Controls_Manager::DIMENSIONS,
                 'size_units' => [ 'px', 'em', '%' ],
                 'selectors' => [
-                    '{{WRAPPER}} .tabs__headings-container' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                    '{{WRAPPER}} .sorter__tags_container' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
                 ],
             ]
         );
@@ -282,17 +278,17 @@ class Entrey_Tabs extends Widget_Base
         $this->add_group_control(
             Group_Control_Border::get_type(),
             [
-                'name' => 'headings_section_border',
+                'name' => 'tags_section_border',
                 'fields_options' => [
                     'width' => [ 'label' => esc_html__( 'Border Width', 'reobiz' ) ],
                     'color' => [ 'label' => esc_html__( 'Border Color', 'reobiz' ) ],
                 ],
-                'selector' => '{{WRAPPER}} .tabs__headings-container',
+                'selector' => '{{WRAPPER}} .sorter__tags_container',
             ]
         );
 
         $this->add_control(
-            'headings_section_border_bg_divider',
+            'tags_section_border_bg_divider',
             [
                 'type' => Controls_Manager::DIVIDER,
                 'conditions' => [
@@ -301,7 +297,7 @@ class Entrey_Tabs extends Widget_Base
                         [
                             'terms' => [
                                 [
-                                    'name' => 'headings_section_border_border',
+                                    'name' => 'tags_section_border_border',
                                     'operator' => '!=',
                                     'value' => '',
                                 ]
@@ -310,7 +306,7 @@ class Entrey_Tabs extends Widget_Base
                         [
                             'terms' => [
                                 [
-                                    'name' => 'headings_section_bg_background',
+                                    'name' => 'tags_section_bg_background',
                                     'operator' => '!=',
                                     'value' => '',
                                 ]
@@ -324,58 +320,66 @@ class Entrey_Tabs extends Widget_Base
         $this->add_group_control(
             Group_Control_Background::get_type(),
             [
-                'name' => 'headings_section_bg',
-                'selector' => '{{WRAPPER}} .tabs__headings-container',
+                'name' => 'tags_section_bg',
+                'selector' => '{{WRAPPER}} .sorter__tags_container',
             ]
         );
 
         $this->end_controls_section();
 
-        /** STYLE -> TITLE CONTAINER */
+        /** STYLE -> TAG CONTAINER */
 
         $this->start_controls_section(
-            'style_title_container',
+            'style_tag_container',
             [
-                'label' => esc_html__( 'Title Container', 'reobiz' ),
+                'label' => esc_html__( 'Tag Container', 'reobiz' ),
                 'tab' => Controls_Manager::TAB_STYLE,
             ]
         );
 
         $this->add_responsive_control(
-            'title_container_min_width',
+            'tag_container_min_width',
             [
                 'label' => esc_html__( 'Min Width', 'reobiz' ),
                 'type' => Controls_Manager::SLIDER,
+                'size_units' => [ 'px', '%' ],
                 'range' => [
                     'px' => [ 'min' => 50, 'max' => 450 ],
                 ],
-                'default' => [ 'size' => 130 ],
+                'default' => [ 'size' => 110 ],
+                'mobile_default' => [ 'size' => 100, 'unit' => '%' ],
                 'selectors' => [
-                    '{{WRAPPER}} .tab__heading' => 'min-width: {{SIZE}}{{UNIT}};',
+                    '{{WRAPPER}} .tag__title' => 'min-width: {{SIZE}}{{UNIT}};',
                 ],
             ]
         );
 
         $this->add_responsive_control(
-            'title_container_margin',
+            'tag_container_margin',
             [
                 'label' => esc_html__( 'Margin', 'reobiz' ),
                 'type' => Controls_Manager::DIMENSIONS,
                 'size_units' => [ 'px', 'em', '%' ],
+                'default' => [
+                    'top' => 0,
+                    'right' => 8,
+                    'bottom' => 5,
+                    'left' => 0,
+                ],
                 'mobile_default' => [
                     'top' => 0,
                     'right' => 0,
-                    'bottom' => 0,
+                    'bottom' => 5,
                     'left' => 0,
                 ],
                 'selectors' => [
-                    '{{WRAPPER}} .tab__heading' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                    '{{WRAPPER}} .tag__title' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
                 ],
             ]
         );
 
         $this->add_responsive_control(
-            'title_container_padding',
+            'tag_container_padding',
             [
                 'label' => esc_html__( 'Padding', 'reobiz' ),
                 'type' => Controls_Manager::DIMENSIONS,
@@ -387,7 +391,7 @@ class Entrey_Tabs extends Widget_Base
                     'left' => 18,
                 ],
                 'selectors' => [
-                    '{{WRAPPER}} .tab__heading' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                    '{{WRAPPER}} .tag__title' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
                 ],
             ]
         );
@@ -395,7 +399,7 @@ class Entrey_Tabs extends Widget_Base
         $this->add_group_control(
             Group_Control_Border::get_type(),
             [
-                'name' => 'title_container_border',
+                'name' => 'tag_container_border',
                 'fields_options' => [
                     'border' => [ 'default' => 'solid' ],
                     'width' => [
@@ -409,46 +413,46 @@ class Entrey_Tabs extends Widget_Base
                     ],
                     'color' => [ 'type' => Controls_Manager::HIDDEN ],
                 ],
-                'selector' => '{{WRAPPER}} .tab__heading',
+                'selector' => '{{WRAPPER}} .tag__title',
             ]
         );
 
         $this->add_control(
-            'title_container_radius',
+            'tag_container_radius',
             [
                 'label' => esc_html__( 'Border Radius', 'reobiz' ),
                 'type' => Controls_Manager::DIMENSIONS,
                 'size_units' => [ 'px', 'em', '%' ],
                 'selectors' => [
-                    '{{WRAPPER}} .tab__heading' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-                    '{{WRAPPER}} .tabs__headings-container' => 'border-radius: calc({{TOP}}{{UNIT}} + {{headings_section_padding.top}}px )'
-                                                                    . ' calc({{RIGHT}}{{UNIT}} + {{headings_section_padding.right}}px )'
-                                                                    . ' calc({{BOTTOM}}{{UNIT}} + {{headings_section_padding.bottom}}px )'
-                                                                    . ' calc({{LEFT}}{{UNIT}} + {{headings_section_padding.left}}px );',
+                    '{{WRAPPER}} .tag__title' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                    '{{WRAPPER}} .sorter__tags_container' => 'border-radius: calc({{TOP}}{{UNIT}} + {{tags_section_padding.top}}px )'
+                                                                    . ' calc({{RIGHT}}{{UNIT}} + {{tags_section_padding.right}}px )'
+                                                                    . ' calc({{BOTTOM}}{{UNIT}} + {{tags_section_padding.bottom}}px )'
+                                                                    . ' calc({{LEFT}}{{UNIT}} + {{tags_section_padding.left}}px );',
                 ],
             ]
         );
 
         $this->start_controls_tabs(
-            'title_container',
+            'tag_container',
             [ 'separator' => 'before' ]
         );
 
         $this->start_controls_tab(
-            'title_container_idle',
+            'tag_container_idle',
             [ 'label' => esc_html__( 'Idle', 'reobiz' ) ]
         );
 
         $this->add_control(
-            'title_container_border_color_idle',
+            'tag_container_border_color_idle',
             [
                 'label' => esc_html__( 'Border Color', 'reobiz' ),
                 'type' => Controls_Manager::COLOR,
-                'condition' => [ 'title_container_border_border!' => '' ],
+                'condition' => [ 'tag_container_border_border!' => '' ],
                 'dynamic' => [ 'active' => true ],
                 'default' => '#eff1f5',
                 'selectors' => [
-                    '{{WRAPPER}} .tab__heading' => 'border-color: {{VALUE}};',
+                    '{{WRAPPER}} .tag__title' => 'border-color: {{VALUE}};',
                 ],
             ]
         );
@@ -456,19 +460,19 @@ class Entrey_Tabs extends Widget_Base
         $this->add_group_control(
             Group_Control_Background::get_type(),
             [
-                'name' => 'title_container_bg_idle',
+                'name' => 'tag_container_bg_idle',
                 'fields_options' => [
-                    'background' => ['default' => 'classic'],
-                    'color' => ['default' => '#f8f9fb'],
+                    'background' => ['default' => 'classic' ],
+                    'color' => ['default' => '#f8f9fb' ],
                 ],
-                'selector' => '{{WRAPPER}} .tab__heading',
+                'selector' => '{{WRAPPER}} .tag__title',
             ]
         );
 
         $this->add_group_control(
             Group_Control_Box_Shadow::get_type(),
             [
-                'name' => 'title_container_shadow_idle',
+                'name' => 'tag_container_shadow_idle',
                 'fields_options' => [
                     'box_shadow_type' => [ 'default' => 'yes' ],
                     'box_shadow' => [ 'default' => [
@@ -479,27 +483,27 @@ class Entrey_Tabs extends Widget_Base
                         'color' => 'rgba(0, 0, 0, 0)',
                     ] ],
                 ],
-                'selector' => '{{WRAPPER}} .tab__heading',
+                'selector' => '{{WRAPPER}} .tag__title',
             ]
         );
 
         $this->end_controls_tab();
 
         $this->start_controls_tab(
-            'title_container_hover',
+            'tag_container_hover',
             [ 'label' => esc_html__( 'Hover', 'reobiz' ) ]
         );
 
         $this->add_control(
-            'title_container_border_color_hover',
+            'tag_container_border_color_hover',
             [
                 'label' => esc_html__( 'Border Color', 'reobiz' ),
                 'type' => Controls_Manager::COLOR,
-                'condition' => [ 'title_container_border_border!' => '' ],
+                'condition' => [ 'tag_container_border_border!' => '' ],
                 'dynamic' => [ 'active' => true ],
                 'default' => 'rgba(255, 255, 255, 0)',
                 'selectors' => [
-                    '{{WRAPPER}} .tab__heading:hover' => 'border-color: {{VALUE}};',
+                    '{{WRAPPER}} .tag__title:hover' => 'border-color: {{VALUE}};',
                 ],
             ]
         );
@@ -507,19 +511,19 @@ class Entrey_Tabs extends Widget_Base
         $this->add_group_control(
             Group_Control_Background::get_type(),
             [
-                'name' => 'title_container_bg_hover',
+                'name' => 'tag_container_bg_hover',
                 'fields_options' => [
-                    'background' => ['default' => 'classic'],
-                    'color' => ['default' => '#ffffff'],
+                    'background' => ['default' => 'classic' ],
+                    'color' => ['default' => '#ffffff' ],
                 ],
-                'selector' => '{{WRAPPER}} .tab__heading:hover',
+                'selector' => '{{WRAPPER}} .tag__title:hover',
             ]
         );
 
         $this->add_group_control(
             Group_Control_Box_Shadow::get_type(),
             [
-                'name' => 'title_container_shadow_hover',
+                'name' => 'tag_container_shadow_hover',
                 'fields_options' => [
                     'box_shadow_type' => [ 'default' => 'yes' ],
                     'box_shadow' => [ 'default' => [
@@ -530,40 +534,40 @@ class Entrey_Tabs extends Widget_Base
                         'color' => 'rgba(0, 0, 0, 0.1)',
                     ] ],
                 ],
-                'selector' => '{{WRAPPER}} .tab__heading:hover',
+                'selector' => '{{WRAPPER}} .tag__title:hover',
             ]
         );
 
         $this->end_controls_tab();
 
         $this->start_controls_tab(
-            'title_container_active',
+            'tag_container_active',
             [ 'label' => esc_html__( 'Active', 'reobiz' ) ]
         );
 
         $this->add_control(
-            'title_container_border_color_active',
+            'tag_container_border_color_active',
             [
                 'label' => esc_html__( 'Border Color', 'reobiz' ),
                 'type' => Controls_Manager::COLOR,
-                'condition' => [ 'title_container_border_border!' => '' ],
+                'condition' => [ 'tag_container_border_border!' => '' ],
                 'dynamic' => [ 'active' => true ],
                 'selectors' => [
-                    '{{WRAPPER}} .tab__heading.active' => 'border-color: {{VALUE}};',
+                    '{{WRAPPER}} .tag__title.active' => 'border-color: {{VALUE}};',
                 ],
             ]
         );
 
         $this->add_control(
-            'title_container_border_top_color_active',
+            'tag_container_border_top_color_active',
             [
                 'label' => esc_html__( 'Border Top Color', 'reobiz' ),
                 'type' => Controls_Manager::COLOR,
-                'condition' => [ 'title_container_border_border!' => '' ],
+                'condition' => [ 'tag_container_border_border!' => '' ],
                 'dynamic' => [ 'active' => true ],
                 'default' => '#EF7F1A',
                 'selectors' => [
-                    '{{WRAPPER}} .tab__heading.active' => 'border-top-color: {{VALUE}};',
+                    '{{WRAPPER}} .tag__title.active' => 'border-top-color: {{VALUE}};',
                 ],
             ]
         );
@@ -571,16 +575,16 @@ class Entrey_Tabs extends Widget_Base
         $this->add_group_control(
             Group_Control_Background::get_type(),
             [
-                'name' => 'title_container_bg_active',
-                'selector' => '{{WRAPPER}} .tab__heading.active',
+                'name' => 'tag_container_bg_active',
+                'selector' => '{{WRAPPER}} .tag__title.active',
             ]
         );
 
         $this->add_group_control(
             Group_Control_Box_Shadow::get_type(),
             [
-                'name' => 'title_container_shadow_active',
-                'selector' => '{{WRAPPER}} .tab__heading.active',
+                'name' => 'tag_container_shadow_active',
+                'selector' => '{{WRAPPER}} .tag__title.active',
             ]
         );
 
@@ -602,7 +606,7 @@ class Entrey_Tabs extends Widget_Base
             Group_Control_Typography::get_type(),
             [
                 'name' => 'title_typography',
-                'selector' => '{{WRAPPER}} .heading__title',
+                'selector' => '{{WRAPPER}} .content__title',
             ]
         );
 
@@ -642,7 +646,7 @@ class Entrey_Tabs extends Widget_Base
                 'type' => Controls_Manager::COLOR,
                 'dynamic' => [ 'active' => true ],
                 'selectors' => [
-                    '{{WRAPPER}} .tab__heading .heading__title' => 'color: {{VALUE}};',
+                    '{{WRAPPER}} .sorter__content .content__title' => 'color: {{VALUE}};',
                 ],
             ]
         );
@@ -661,7 +665,7 @@ class Entrey_Tabs extends Widget_Base
                 'type' => Controls_Manager::COLOR,
                 'dynamic' => [ 'active' => true ],
                 'selectors' => [
-                    '{{WRAPPER}} .tab__heading:hover .heading__title' => 'color: {{VALUE}};',
+                    '{{WRAPPER}} .sorter__content:hover .content__title' => 'color: {{VALUE}};',
                 ],
             ]
         );
@@ -680,7 +684,7 @@ class Entrey_Tabs extends Widget_Base
                 'type' => Controls_Manager::COLOR,
                 'dynamic' => [ 'active' => true ],
                 'selectors' => [
-                    '{{WRAPPER}} .tab__heading.active .heading__title' => 'color: {{VALUE}};',
+                    '{{WRAPPER}} .sorter__content.active .content__title' => 'color: {{VALUE}};',
                 ],
             ]
         );
@@ -703,7 +707,7 @@ class Entrey_Tabs extends Widget_Base
             Group_Control_Typography::get_type(),
             [
                 'name' => 'content_typography',
-                'selector' => '{{WRAPPER}} .tab__content',
+                'selector' => '{{WRAPPER}} .sorter__content',
             ]
         );
 
@@ -713,8 +717,24 @@ class Entrey_Tabs extends Widget_Base
                 'label' => esc_html__( 'Margin', 'reobiz' ),
                 'type' => Controls_Manager::DIMENSIONS,
                 'size_units' => [ 'px', 'em', '%' ],
+                'default' => [
+                    'top' => 15,
+                    'right' => 7,
+                    'bottom' => 15,
+                    'left' => 7,
+                ],
+                'mobile_default' => [
+                    'top' => 15,
+                    'right' => 0,
+                    'bottom' => 15,
+                    'left' => 0,
+                ],
                 'selectors' => [
-                    '{{WRAPPER}} .tab__content' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                    '{{WRAPPER}} .sorter__content' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};'
+                                                    . 'width: calc( var(--entrey-sorter-content-width) - {{LEFT}}{{UNIT}} - {{RIGHT}}{{UNIT}} );',
+
+                    '{{WRAPPER}} .sorter__contents-container' => 'margin-left: calc( {{LEFT}}{{UNIT}} * -1 );'
+                                                               . 'margin-right: calc( {{RIGHT}}{{UNIT}} * -1 );',
                 ],
             ]
         );
@@ -726,7 +746,7 @@ class Entrey_Tabs extends Widget_Base
                 'type' => Controls_Manager::DIMENSIONS,
                 'size_units' => [ 'px', 'em', '%' ],
                 'selectors' => [
-                    '{{WRAPPER}} .tab__content' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                    '{{WRAPPER}} .sorter__content' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
                 ],
             ]
         );
@@ -739,7 +759,7 @@ class Entrey_Tabs extends Widget_Base
                     'width' => [ 'label' => esc_html__( 'Border Width', 'reobiz' ) ],
                     'color' => [ 'label' => esc_html__( 'Border Color', 'reobiz' ) ],
                 ],
-                'selector' => '{{WRAPPER}} .tab__content',
+                'selector' => '{{WRAPPER}} .sorter__content',
             ]
         );
 
@@ -750,7 +770,7 @@ class Entrey_Tabs extends Widget_Base
                 'type' => Controls_Manager::DIMENSIONS,
                 'size_units' => [ 'px', 'em', '%' ],
                 'selectors' => [
-                    '{{WRAPPER}} .tab__content,
+                    '{{WRAPPER}} .sorter__content,
                      {{WRAPPER}} .content__media img' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
                 ],
             ]
@@ -763,7 +783,7 @@ class Entrey_Tabs extends Widget_Base
                 'type' => Controls_Manager::COLOR,
                 'dynamic' => [ 'active' => true ],
                 'selectors' => [
-                    '{{WRAPPER}} .tab__content' => 'color: {{VALUE}};',
+                    '{{WRAPPER}} .sorter__content' => 'color: {{VALUE}};',
                 ],
             ]
         );
@@ -775,7 +795,7 @@ class Entrey_Tabs extends Widget_Base
                 'type' => Controls_Manager::COLOR,
                 'dynamic' => [ 'active' => true ],
                 'selectors' => [
-                    '{{WRAPPER}} .tab__content' => 'background-color: {{VALUE}};',
+                    '{{WRAPPER}} .sorter__content' => 'background-color: {{VALUE}};',
                 ],
             ]
         );
@@ -787,83 +807,104 @@ class Entrey_Tabs extends Widget_Base
     {
         $this->widget_id = substr( $this->get_id_int(), 0, 3 );
 
-        echo '<div class="entrey-tabs">';
+        echo '<div class="entrey-sorter">';
 
-            echo '<div class="tabs__headings-container">';
-                $this->render_tabs_headings();
+            echo '<div class="sorter__tags_container">';
+                $this->render_sorter_tags();
             echo '</div>';
 
-            echo '<div class="tabs__contents-container">';
-                $this->render_tabs_contents();
+            echo '<div class="sorter__contents-container">';
+                $this->render_sorter_contents();
             echo '</div>';
 
         echo '</div>';
     }
 
-    protected function render_tabs_headings()
+    protected function render_sorter_tags()
     {
-        $title_tag = $this->get_settings_for_display( 'title_tag' );
-
-        foreach ( $this->get_settings_for_display( 'repeater_data' ) as $index => $item ) {
-            $tab_count = $index + 1;
-            $tab_title_key = $this->get_repeater_setting_key( 'tab_title', 'repeater_data', $index );
-            $tab_id = 'tab-id-' . $this->widget_id . $tab_count;
-            $this->add_render_attribute( $tab_title_key, [
-                'data-tab-id' => $tab_id,
-                'class' => [
-                    'tab__heading',
-                    'elementor-repeater-item-' . $item[ '_id' ],
-                ],
-            ] );
-
-            echo '<div ', $this->get_render_attribute_string( $tab_title_key ), '>';
-
-                echo '<', $title_tag, ' class="heading__title">',
-                    '<span class="title__text">',
-                        $item[ 'tab_title' ],
-                    '</span>',
-                '</', $title_tag, '>';
-
-            echo '</div>';
-        }
-    }
-
-    protected function render_tabs_contents()
-    {
-        foreach ( $this->get_settings_for_display( 'repeater_data' ) as $index => $tab_item ) {
-            $tab_count = $index + 1;
-            $tab_content_key = $this->get_repeater_setting_key( 'tab_content_key', 'repeater_data', $index );
-            $tab_id = 'tab-id-' . $this->widget_id . $tab_count;
-
-            $this->add_render_attribute( $tab_content_key, [
-                'data-tab-id' => $tab_id,
-                'class' => [
-                    'tab__content',
-                    'elementor-repeater-item-' . $tab_item[ '_id' ]
-                ],
-            ] );
-
-            echo '<div ', $this->get_render_attribute_string( $tab_content_key ), '>',
-                $this->get_tab_content( $tab_item ),
+        foreach ( $this->get_tags_array() as $v ) {
+            echo '<div class="tag__title">',
+                esc_html($v),
             '</div>';
         }
     }
 
-    protected function get_tab_content( $tab )
+    protected function get_tags_array()
     {
-        if (
-            'media' === $tab[ 'content_type' ]
-            && ! empty( $tab[ 'tab_media' ][ 'url' ] )
-        ) {
-            $this->add_render_attribute( 'content_image', 'src', $tab[ 'tab_media' ][ 'url' ] );
-            $this->add_render_attribute( 'content_image', 'alt', Control_Media::get_image_alt( $tab[ 'tab_media' ] ) );
-            $this->add_render_attribute( 'content_image', 'title', Control_Media::get_image_title( $tab[ 'tab_media' ] ) );
+        $tags_arr = [];
 
-            return '<div class="content__media">'
-                    . Group_Control_Image_Size::get_attachment_image_html( $tab, 'content_image', 'tab_media' )
-                . '</div>';
+        foreach ( $this->get_settings_for_display( 'repeater_data' ) as $index => $sorter_item ) {
+            $item_tags = explode( ',', $sorter_item['item_tags' ] );
+
+            foreach ($item_tags as $k => $v) {
+                $v = trim( esc_html( $v ) );
+
+                if ( in_array( $v, $tags_arr ) ) {
+                    continue;
+                }
+
+                $tags_arr[] = $v;
+            }
         }
 
-        return do_shortcode( $tab[ 'tab_content' ] );
+        return $tags_arr;
+    }
+
+    protected function render_sorter_contents()
+    {
+        foreach ( $this->get_settings_for_display( 'repeater_data' ) as $index => $sorter_item ) {
+            $tab_count = $index + 1;
+            $tab_content_key = $this->get_repeater_setting_key( 'tab_content_key', 'repeater_data', $index );
+            $tab_id = 'tab-id-' . $this->widget_id . $tab_count;
+
+            $item_tags_array = explode( ',', $sorter_item['item_tags' ] );
+            $tags_array_modified = [];
+            foreach ( $item_tags_array as $tag ) {
+                $tag = trim( $tag );
+                $tag = str_replace( ' ', '-', $tag );
+                $tags_array_modified[] = $tag;
+            }
+            $item_tags_string = implode( ' ', $tags_array_modified);
+
+            $this->add_render_attribute( $tab_content_key, [
+                'data-tab-id' => $tab_id,
+                'data-tags' => esc_attr( $item_tags_string ),
+                'class' => [
+                    'sorter__content',
+                    'elementor-repeater-item-' . $sorter_item[ '_id' ]
+                ],
+            ] );
+
+            echo '<div ', $this->get_render_attribute_string( $tab_content_key ), '>';
+                $this->render_item_content( $sorter_item );
+            echo '</div>';
+        }
+    }
+
+    protected function render_item_content( $sorter_item )
+    {
+        if ( ! empty( $sorter_item[ 'item_media' ][ 'url' ] ) ) {
+            $this->add_render_attribute( 'content_image', 'src', $sorter_item[ 'item_media' ][ 'url' ] );
+            $this->add_render_attribute( 'content_image', 'alt', Control_Media::get_image_alt( $sorter_item[ 'item_media' ] ) );
+            $this->add_render_attribute( 'content_image', 'title', Control_Media::get_image_title( $sorter_item[ 'item_media' ] ) );
+
+            echo '<div class="content__media">',
+                Group_Control_Image_Size::get_attachment_image_html( $sorter_item, 'content_image', 'item_media' ),
+            '</div>';
+        }
+
+        if ( $item_title = $sorter_item[ 'item_title' ] ?? '' ) {
+            $title_tag = $this->get_settings_for_display( 'title_tag' );
+
+            echo '<', $title_tag, ' class="content__title">',
+                '<span class="title__text">',
+                    $item_title,
+                '</span>',
+            '</', $title_tag, '>';
+        }
+
+        echo '<div class="content__description">',
+            do_shortcode( $sorter_item[ 'item_wysiwyg' ] ),
+        '</div>';
     }
 }
