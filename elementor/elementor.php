@@ -70,7 +70,7 @@ class Entrey_Elementor
 
             wp_enqueue_style(
                 'entrey-' . $widget_name,
-                get_stylesheet_directory_uri() . '/elementor/css/'. $base_name
+                get_stylesheet_directory_uri() . '/elementor/css/' . $base_name
             );
         }
     }

@@ -29,7 +29,12 @@ body.elementor-page {
 
 .myriad-pro-font-family,
 body,
-h1, h2, h3, h4, h5, h6,
+body h1,
+body h2,
+body h3,
+body h4,
+body h5,
+body h6,
 .rs-heading .title-inner .title,
 .rs-heading .title-inner .title span.watermar,
 .rs-heading .title-inner .title span.watermark-animate,

@@ -184,7 +184,7 @@ class Entrey_Services_Sorter extends Widget_Base
                 'type' => Controls_Manager::TEXT,
                 'label_block' => true,
                 'dynamic' => [ 'active' => true ],
-                'default' => esc_html__( 'Tab Title', 'reobiz' ),
+                'default' => esc_html__( 'Title', 'reobiz' ),
             ]
         );
 
@@ -203,7 +203,7 @@ class Entrey_Services_Sorter extends Widget_Base
                 'label' => esc_html__( 'Content', 'reobiz' ),
                 'type' => Controls_Manager::WYSIWYG,
                 'dynamic' => [ 'active' => true ],
-                'default' => esc_html__( 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Optio, neque qui velit.', 'reobiz' ),
+                'default' => esc_html__( 'Lorem ipsum dolor sit amet.', 'reobiz' ),
             ]
         );
 
@@ -216,6 +216,7 @@ class Entrey_Services_Sorter extends Widget_Base
                 'required' => true,
                 'dynamic' => [ 'active' => true ],
                 'description' => esc_html__( 'Список тэгов для сортировки, перечисленных через запятую.', 'reobiz' ),
+                'default' => esc_html__( 'Все', 'reobiz' ),
             ]
         );
 
